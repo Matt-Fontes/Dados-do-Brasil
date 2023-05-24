@@ -1,38 +1,89 @@
+:root {
+  --option-size: 16px;
+} 
+
+* {
+  box-sizing: border-box;
+}
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  background: #131313;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.tab-option {
+  color: #ddd;
+  padding: 12px 28px;
+  border-radius: 8px;
+  background-color: transparent;
+  transition: background-color .3s;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.tab-option:hover {
+  cursor: pointer;
+  background-color: #7a6a15;
+}
+
+.timeline-picker {
+  width: min(100%, 1000px);
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  margin: auto;
+  position: relative;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background-color: #fff1;
+  transition: background-color .3s ease;
 }
 
-.App-link {
-  color: #61dafb;
+.timeline-picker:hover {
+  background-color: #fffd;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.timeline-picker::before {
+  content: "";
+  width: calc(100% - var(--option-size) * 4);
+  height: 4px;
+  background-color: #7a6a1599;
+  position: absolute;
+  top: calc(50% - 2px);
+  left: calc(var(--option-size) * 2);
+}
+
+.timeline-picker > .option-container {
+  flex-grow: 1;
+  height: min(100%, 50px);
+  display: flex;
+  height: 40px;
+}
+
+.timeline-picker > .option-container > .option {
+  width: var(--option-size);
+  height: var(--option-size);
+  margin: auto;
+  border-radius: 50%;
+  border: solid 1px #fff;
+  background-color: #7a6a15;
+  box-shadow: 0 0 20px #000;
+  transform: scale(1);
+  transition: transform .1s ease-out;
+}
+
+.timeline-picker > .option-container > .option.selected {
+  transform: scale(2);
+}
+
+.timeline-picker > .option-container:hover {
+  cursor: pointer;
+}
+.timeline-picker > .option-container:hover > .option {
+  transform: scale(1.4);
+}
+
+.timeline-picker > .option-container:hover > .option.selected {
+  transform: scale(2);
 }

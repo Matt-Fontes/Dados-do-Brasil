@@ -93,6 +93,7 @@ export default function MapBoxMap({
     showSearchBar,
     searchBarWidth,
     flyTo,
+    heatmapAttributes,
     ...otherProps
 }) {
 
@@ -316,6 +317,7 @@ export default function MapBoxMap({
                 id="HeatMapLayer"
                 coordinates={heatMapLayerData.coordinates}
                 properties={heatMapLayerData.properties}
+                heatmapAttributes={heatmapAttributes}
             />
         );
     };
@@ -416,7 +418,7 @@ export default function MapBoxMap({
                 height,
                 ...style,
             }}
-            mapStyle={mapStyle[type]}
+            mapStyle={mapStyle.satellite}
             initialViewState={{
                 ...formatCoords(center),
                 zoom,
@@ -427,6 +429,7 @@ export default function MapBoxMap({
             onDrag={handleDrag}
             onDragEnd={handleDragEnd}
             onLoad={onLoad}
+            minZoom={3}
             {...otherProps}
         >
             {loadButtons()}
@@ -442,7 +445,8 @@ export default function MapBoxMap({
 }
 
 MapBoxMap.defaultProps = {
-    center: [-52.3811, -24.0438],
+    // center: [-52.3811, -24.0438],
+    center: [-50.2556, -13.5444],
     type: 'streets',
     children: <></>,
     height: '500px',
@@ -475,6 +479,7 @@ MapBoxMap.defaultProps = {
     showSearchBar: false,
     searchBarWidth: '400px',
     flyTo: {},
+    heatmapAttributes: {},
 };
 
 MapBoxMap.propTypes = {
@@ -514,4 +519,5 @@ MapBoxMap.propTypes = {
     showSearchBar: PropTypes.bool,
     searchBarWidth: PropTypes.string,
     flyTo: PropTypes.object,
+    heatmapAttributes: PropTypes.object,
 };
