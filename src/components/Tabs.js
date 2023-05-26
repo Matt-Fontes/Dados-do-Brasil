@@ -25,7 +25,8 @@ export default function Tabs({
             }}
         >
             {renderOption('Setores da Economia', 'pib')}
-            {renderOption('TBA', 'tba')}
+            {renderOption('Impostos', 'impostos')}
+            {renderOption('Mapa 3D pib', 'pib2')}
         </div>
     );
 }

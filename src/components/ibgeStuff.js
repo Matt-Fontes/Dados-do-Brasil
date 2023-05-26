@@ -4,23 +4,31 @@ import MapBoxMap from "./MapBoxMap";
 import simplifiedGeojson from './../assets/ddds/geojsonSimplificado.json';
 import rgbJson from './../assets/rgb.json'
 import HorizontalTimelinePicker from "./HorizontalTimelinePicker";
+import rgbTriangle from './../assets/triangulo_rgb.png';
+import { Popup } from "react-map-gl";
+import { Badge } from "antd";
 
 export default function IBGEStuff() {
     const [data, setData] = useState([]);
     const [polygons, setPolygons] = useState([]);
     const [year, setYear] = useState(2002);
+    const [popup, setPopup] = useState(null);
 
     const drawPolygonsFromRGB = () => {
         const formattedPolygons = simplifiedGeojson.features.map((city, index) => {
 
             const parsedGeojson = city.geometry;
 
-            const color = rgbJson[city.properties.codigo_ibge][year];
+            const pibData = rgbJson[city.properties.codigo_ibge][year];
+            const { va_industria: industria, va_agropecuaria: agro, va_servicos: servicos } = (pibData || {});
 
             const obj = {
                 path: parsedGeojson?.coordinates ? parsedGeojson.coordinates[0] : [],
                 codigo_ibge: city.properties.codigo_ibge,
-                color: color ? `rgb(${color.r},${color.g},${color.b})` : 'rgb(0,0,0)',
+                color: pibData ? `rgb(${pibData.r},${pibData.g},${pibData.b})` : 'rgb(0,0,0)',
+                industria,
+                agro,
+                servicos,
                 ...city.properties,
             };
 
@@ -100,13 +108,19 @@ export default function IBGEStuff() {
         
     // }
     
+    const handlePolygonClick = data => {
+        console.log(popup);
+        setPopup(data.properties)
+    }
+
     useEffect(() => {
         // Rode para gerar o arquivo do MapShaper
         // generateGeojsonForMapshaper();
-        
+        setPopup(null);
         drawPolygonsFromRGB();
     }, [year]);
     
+
     
     return (
         <div style={{ width: '100%', display: 'flex' }}>
@@ -115,10 +129,32 @@ export default function IBGEStuff() {
                     height="100%"
                     zoom={3.5}
                     polygons={polygons}
-                    polygonOnClick={console.log}
+                    polygonOnClick={handlePolygonClick}
                 >
+                    {popup && (
+                        <Popup longitude={popup.longitude} latitude={popup.latitude}
+                            anchor="bottom"
+                            onClose={() => setPopup(null)}
+                            closeOnClick={false}
+                        >
+                            <div style={{ padding: 8, textAlign: 'left' }}>
+                                <span style={{ fontSize: 18, marginBottom: 12, display: 'block' }}>{popup.nome.replace(/([A-Z])/g, ' $1').trim()}</span>
+                                <Badge color="red" text={<span>Indústria: <b>{popup.industria || 0}</b></span>} />
+                                <Badge color="green" text={<span>Agropecuária: <b>{popup.agro || 0}</b></span>} />
+                                <Badge color="blue" text={<span>Serviços: <b>{popup.servicos || 0}</b></span>} />
+                            </div>
+                        </Popup>
+                    )}
                     <div style={{ position: 'absolute', bottom: 48, width: '100%', display: 'flex' }}>
                         <HorizontalTimelinePicker onClick={setYear}/>
+                    </div>
+                    <div className="triangle" style={{ position: 'absolute', bottom: 48, left: 24, width: 'clamp(100px, 16%, 300px)' }}>
+                        <div style={{ width: '100%', background: '#0004', borderRadius: 12, padding: 30, position: 'relative' }}>
+                            <img style={{ width: '100%' }} src={rgbTriangle} alt="triangulo rgb" />
+                            <div className="triangle-label agriculture">Agropecuária</div>
+                            <div className="triangle-label industries">Indústria</div>
+                            <div className="triangle-label services">Serviços</div>
+                        </div>
                     </div>
                 </MapBoxMap>
             </div>

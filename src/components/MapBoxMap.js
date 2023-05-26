@@ -94,6 +94,7 @@ export default function MapBoxMap({
     searchBarWidth,
     flyTo,
     heatmapAttributes,
+    minZoom,
     ...otherProps
 }) {
 
@@ -418,6 +419,7 @@ export default function MapBoxMap({
                 height,
                 ...style,
             }}
+            // projection="globe"
             mapStyle={mapStyle.satellite}
             initialViewState={{
                 ...formatCoords(center),
@@ -429,7 +431,7 @@ export default function MapBoxMap({
             onDrag={handleDrag}
             onDragEnd={handleDragEnd}
             onLoad={onLoad}
-            minZoom={3}
+            minZoom={minZoom}
             {...otherProps}
         >
             {loadButtons()}
@@ -480,6 +482,7 @@ MapBoxMap.defaultProps = {
     searchBarWidth: '400px',
     flyTo: {},
     heatmapAttributes: {},
+    minZoom: 3,
 };
 
 MapBoxMap.propTypes = {
@@ -517,6 +520,7 @@ MapBoxMap.propTypes = {
     showZoomButtons: PropTypes.bool,
     showCompassButton: PropTypes.bool,
     showSearchBar: PropTypes.bool,
+    minZoom: PropTypes.number,
     searchBarWidth: PropTypes.string,
     flyTo: PropTypes.object,
     heatmapAttributes: PropTypes.object,

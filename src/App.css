@@ -28,7 +28,7 @@ body {
 }
 
 .timeline-picker {
-  width: min(100%, 1000px);
+  width: min(100%, 800px);
   display: flex;
   justify-content: space-between;
   margin: auto;
@@ -42,6 +42,27 @@ body {
 
 .timeline-picker:hover {
   background-color: #fffd;
+}
+
+.type-picker {
+  transition: color .3s ease, background-color .3s ease;
+}
+
+.type-picker:hover {
+  cursor: pointer;
+  background-color: #fffd;
+  color: #131313 !important;
+}
+.type-picker-badge > .ant-badge-status-text {
+  color: #ddd !important;
+}
+.type-picker:hover > .type-picker-badge > .ant-badge-status-text {
+  color: #131313 !important;
+}
+
+
+.type-picker-selected {
+
 }
 
 .timeline-picker::before {
@@ -86,4 +107,38 @@ body {
 
 .timeline-picker > .option-container:hover > .option.selected {
   transform: scale(2);
+}
+
+.triangle {
+  transform-origin: bottom left;
+  transition: transform .3s ease;
+  transform: scale(1);
+}
+
+@media only screen and (max-width: 1200px) {
+  .triangle:hover {
+    transform: scale(2);
+  }
+}
+
+
+.triangle-label {
+  position: absolute;
+  color: #eee;
+  font-weight: bold;
+}
+
+.triangle-label.agriculture {
+  top: 5px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.triangle-label.industries {
+  left: 10px;
+}
+
+.triangle-label.services {
+  right: 10px;
 }
